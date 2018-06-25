@@ -1,0 +1,6 @@
+com\springbootdemo\controller\api\UserApi.class
+com\springbootdemo\service\UserService.class
+com\springbootdemo\DemoApplication.class
+com\springbootdemo\service\impl\UserServiceImpl.class
+com\springbootdemo\mapper\UserMapper.class
+com\springbootdemo\model\User.class

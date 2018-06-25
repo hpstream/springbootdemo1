@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springbootdemo.mapper.UserMapper">
+    <resultMap id="UserResultMap" type="com.springbootdemo.model.User">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+    </resultMap>
+
+    <!-- 获取用户列表 -->
+    <select id="getUsers" resultMap="UserResultMap">
+        select
+        id
+        ,user_name
+        ,login_name
+        ,password
+        ,remark
+        ,create_time
+        ,create_user
+        ,update_time
+        ,update_user
+        from sys_user
+        order by create_time desc
+    </select>
+
+    <!-- 根据id获取用户详情 -->
+    <select id="getUserByUserId" resultMap="UserResultMap">
+        select
+        id
+        ,user_name
+        ,login_name
+        ,`password`
+        ,remark
+        ,create_time
+        ,create_user
+        ,update_time
+        ,update_user
+        from sys_user
+        where id = #{id}
+    </select>
+
+    <!-- 根据id修改用户信息 -->
+    <update id="editUserByUserId" parameterType="com.springbootdemo.model.User">
+        UPDATE sys_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != null and userName != ''">
+                user_name=#{userName},
+            </if>
+            <if test="loginName != null and loginName != ''">
+                login_name=#{loginName},
+            </if>
+            <if test="password != null and password !=''">
+                password=#{password},
+            </if>
+            <if test="remark != null and remark !=''">
+                remark=#{remark},
+            </if>
+            <if test="createUser != null and createUser !=''">
+                create_user=#{createUser},
+            </if>
+            <if test="createTime != null">
+                create_time=#{createTime},
+            </if>
+            <if test="updateUser != null and updateUser !=''">
+                update_user=#{updateUser},
+            </if>
+            <if test="updateTime != null">
+                update_time=#{updateTime},
+            </if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 添加用户 -->
+    <insert id="addUser" parameterType="com.springbootdemo.model.User">
+        INSERT INTO sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="loginName != null and loginName != ''">login_name,</if>
+            <if test="password != null and password !=''">password,</if>
+            <if test="remark != null and remark !=''">remark,</if>
+            <if test="createUser != null and createUser !=''">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUser != null and updateUser !=''">update_user,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{id},
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="loginName != null and loginName != ''">#{loginName},</if>
+            <if test="password != null and password !=''">#{password},</if>
+            <if test="remark != null and remark !=''">#{remark},</if>
+            <if test="createUser != null and createUser !=''">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUser != null and updateUser !=''">#{updateUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <!-- 删除用户 -->
+    <delete id="delUserByUserIds">
+        <if test="null != ids and ids.size > 0">
+            DELETE FROM sys_user
+            WHERE id IN
+            <foreach collection="ids" item="id" open="(" separator=","  close=")">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+
+
+</mapper>

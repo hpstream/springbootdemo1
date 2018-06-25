@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: dev
+
+  #公共配置
+  #mysql数据库连接
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/demo1?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 1234
+
+  #jpa
+  jpa:
+    hibernate:
+      #create有无表都会drop再create
+      #update有则不删
+      #create-drop应用停止则删表
+      #validate验证字段一致性，否则报错
+      #none
+      ddl-auto: update
+    show-sql: true
+
+mybatis:
+  mapper-locations: classpath*:/mapper/**Mapper.xml
