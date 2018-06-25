@@ -21,6 +21,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 /**
  * 用户api.
  *
@@ -28,7 +32,8 @@ import javax.annotation.Resource;
  * @date 2018-06-25 9:32
  **/
 @RestController
-@RequestMapping("users")
+@RequestMapping("api/users")
+@Api(description = "user相关的api")
 public class UserApi {
 
   @Resource
@@ -39,8 +44,9 @@ public class UserApi {
    *
    * @return 列表
    */
+  @ApiOperation(value = "获取用户列表", notes = "查询数据库中用户列表")
   @GetMapping
-  public List<User> getUsers() {
+  public @ApiParam(name="用户列表",value="数组", required=true) List<User> getUsers() {
     return service.getUsers();
   }
 
@@ -50,6 +56,7 @@ public class UserApi {
    * @param id 用户id
    * @return 详情
    */
+  @ApiOperation(value = "根据id获取用户详情", notes = "根据id获取用户详情")
   @GetMapping("{id}")
   public User getUserByUserId(@PathVariable("id") String id) {
 
@@ -62,9 +69,13 @@ public class UserApi {
    * @param user 用户
    * @return 修改结果
    */
+  @ApiOperation(value = "根据id修改用户信息", notes = "根据id修改用户信息")
   @PutMapping("{id}")
-  public String editUserByUserId(@PathVariable("id")String id,
-                               @RequestBody User user) {
+  public String editUserByUserId(
+          @ApiParam(name="用户id", value="字符串", required=true)
+          @PathVariable("id")String id,
+          @ApiParam(name="用户", value="对象", required=true)
+          @RequestBody User user) {
     user.setId(id);
     service.editUserByUserId(user);
 
@@ -77,8 +88,11 @@ public class UserApi {
    * @param user 用户
    * @return 添加结果
    */
+  @ApiOperation(value = "添加用户", notes = "添加用户")
   @PostMapping
-  public String addUser(@RequestBody User user) {
+  public String addUser(
+          @ApiParam(name="用户对象",value="传入json格式",required=true)
+          @RequestBody User user) {
     service.addUser(user);
 
     return "添加成功";
@@ -90,6 +104,7 @@ public class UserApi {
    * @param ids 用户id集合
    * @return 删除结果
    */
+  @ApiOperation(value = "删除用户", notes = "删除用户")
   @DeleteMapping
   public String delUserByUserIds(@RequestParam List<String> ids) {
     service.delUserByUserIds(ids);

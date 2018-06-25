@@ -9,19 +9,41 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Properties;
+
 /**
  * 应用入口.
  *
  * @author kexin.ding
  * @date 2018-06-25 9:32
  */
-@SpringBootApplication//自动加载配置文件 因为配置了插件maven会自动扫描resources下面的yml文件，如果用了properties，则扫描的是application.properties
-@EnableTransactionManagement//开启事务管理
-@MapperScan("com.springbootdemo.mapper")//扫描包，必须加这个，不加报错，如果不加，也可以在每个mapper上添加@Mapper注释
+@SpringBootApplication
+@EnableTransactionManagement
+@MapperScan("com.springbootdemo.mapper")
 @RestController
 public class DemoApplication {
+
+	private CorsConfiguration buildConfig() {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.addAllowedOrigin("*");
+		corsConfiguration.addAllowedHeader("*");
+		corsConfiguration.addAllowedMethod("*");
+		return corsConfiguration;
+	}
+
+	/**
+	 * 跨域过滤器
+	 */
+	@Bean
+	public CorsFilter corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", buildConfig());
+		return new CorsFilter(source);
+	}
 
 	/**
 	 * 配置mybatis的分页插件pageHelper.
