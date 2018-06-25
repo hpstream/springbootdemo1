@@ -33,8 +33,7 @@ public class Swagger2 {
     return new Docket(DocumentationType.SWAGGER_2)
             .apiInfo(apiInfo())
             .select()
-            //为当前包路径
-            //这个包指的是我们在哪些类中使用swagger2来测试。
+            //为当前包路径，这个包指的是我们在哪些类中使用swagger2来测试。
             .apis(RequestHandlerSelectors.basePackage("com.springbootdemo.controller.api"))
             .paths(PathSelectors.any())
             .build();

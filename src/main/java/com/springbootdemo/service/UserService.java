@@ -7,6 +7,7 @@ package com.springbootdemo.service;
 import com.springbootdemo.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户业务层.
@@ -21,7 +22,7 @@ public interface UserService {
    *
    * @return 列表
    */
-  List<User> getUsers();
+  List<User> getUsers(int offset, int limit, Map<String, Object> condition);
 
   /**
    * 根据id获取用户详情.

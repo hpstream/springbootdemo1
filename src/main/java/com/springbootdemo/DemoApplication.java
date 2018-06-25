@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.cors.CorsConfiguration;
@@ -52,11 +53,11 @@ public class DemoApplication {
 	public PageHelper pageHelper(){
 		PageHelper pageHelper = new PageHelper();
 		Properties properties = new Properties();
-		properties.setProperty("offsetAsPageNum","true");
-		properties.setProperty("rowBoundsWithCount","true");
-		properties.setProperty("reasonable","true");
+		properties.setProperty("offsetAsPageNum", "true");
+		properties.setProperty("rowBoundsWithCount", "true");
+		properties.setProperty("reasonable", "true");
 		//配置mysql数据库的方言
-		properties.setProperty("dialect","mysql");
+		properties.setProperty("dialect", "mysql");
 		pageHelper.setProperties(properties);
 		return pageHelper;
 	}
@@ -66,7 +67,7 @@ public class DemoApplication {
 	 *
 	 * @return 测试结果
 	 */
-	@RequestMapping("/test")
+	@GetMapping("/test")
 	public String test() {
 		return "This is a test API.";
 	}

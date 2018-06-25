@@ -26,6 +26,18 @@
         ,update_time
         ,update_user
         from sys_user
+        where 1=1
+        <if test="map != null">
+            <if test="map.id != null and map.id != ''">
+                and id = #{map.id}
+            </if>
+            <if test="map.userName != null and map.userName != ''">
+                and user_name like concat('%' , #{map.userName}, '%')
+            </if>
+            <if test="map.loginName != null and map.loginName != ''">
+                and login_name like concat('%' , #{map.loginName}, '%')
+            </if>
+        </if>
         order by create_time desc
     </select>
 

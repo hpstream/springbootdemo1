@@ -4,9 +4,16 @@
 
 package com.springbootdemo.controller.api;
 
+import com.github.pagehelper.PageInfo;
+import com.springbootdemo.annotation.RequestJsonParam;
+import com.springbootdemo.core.entity.MapWapper;
 import com.springbootdemo.model.User;
 import com.springbootdemo.service.UserService;
+import com.springbootdemo.util.FormUtil;
+import com.springbootdemo.util.JsonUtils;
 
+import org.apache.tomcat.jni.Mmap;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +25,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
 /**
  * 用户api.
@@ -31,13 +40,15 @@ import io.swagger.annotations.ApiParam;
  * @author kexin.ding
  * @date 2018-06-25 9:32
  **/
+@Api(description = "user相关的api")
 @RestController
 @RequestMapping("api/users")
-@Api(description = "user相关的api")
 public class UserApi {
 
-  @Resource
-  private UserService service;
+  private final UserService service;
+  public UserApi(UserService service) {
+    this.service = service;
+  }
 
   /**
    * 获取用户列表.
@@ -45,9 +56,19 @@ public class UserApi {
    * @return 列表
    */
   @ApiOperation(value = "获取用户列表", notes = "查询数据库中用户列表")
+  @ApiImplicitParams({
+          @ApiImplicitParam(name = "offset", value = "偏移量", paramType = "query"),
+          @ApiImplicitParam(name = "limit", value = "限制量", defaultValue = "10", paramType = "query"),
+          @ApiImplicitParam(name = "condition", value = "检索条件", paramType = "query")
+  })
   @GetMapping
-  public @ApiParam(name="用户列表",value="数组", required=true) List<User> getUsers() {
-    return service.getUsers();
+  public PageInfo<User> getUsers(
+          HttpServletRequest request,
+          @RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
+          @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
+    Map<String,Object> map = FormUtil.getParameterMap(request);
+    Map<String,Object> condition = JsonUtils.toObject((String)map.get("condition"), Map.class);
+    return new PageInfo<>(service.getUsers(offset, limit, condition));
   }
 
   /**
@@ -57,6 +78,7 @@ public class UserApi {
    * @return 详情
    */
   @ApiOperation(value = "根据id获取用户详情", notes = "根据id获取用户详情")
+  @ApiImplicitParam(name = "id", value = "user的id", paramType = "path", required = true, dataType = "String")
   @GetMapping("{id}")
   public User getUserByUserId(@PathVariable("id") String id) {
 
@@ -70,11 +92,13 @@ public class UserApi {
    * @return 修改结果
    */
   @ApiOperation(value = "根据id修改用户信息", notes = "根据id修改用户信息")
+  @ApiImplicitParams({
+          @ApiImplicitParam(name = "id", value = "user的id", paramType = "path", required = true, dataType = "String"),
+          @ApiImplicitParam(name = "user", value = "user对象", paramType = "body", required = true, dataType = "User")
+  })
   @PutMapping("{id}")
   public String editUserByUserId(
-          @ApiParam(name="用户id", value="字符串", required=true)
           @PathVariable("id")String id,
-          @ApiParam(name="用户", value="对象", required=true)
           @RequestBody User user) {
     user.setId(id);
     service.editUserByUserId(user);
@@ -89,10 +113,9 @@ public class UserApi {
    * @return 添加结果
    */
   @ApiOperation(value = "添加用户", notes = "添加用户")
+  @ApiImplicitParam(name = "user", value = "user对象", paramType = "body", required = true, dataType = "User")
   @PostMapping
-  public String addUser(
-          @ApiParam(name="用户对象",value="传入json格式",required=true)
-          @RequestBody User user) {
+  public String addUser(@RequestBody User user) {
     service.addUser(user);
 
     return "添加成功";
@@ -105,8 +128,9 @@ public class UserApi {
    * @return 删除结果
    */
   @ApiOperation(value = "删除用户", notes = "删除用户")
+  @ApiImplicitParam(name = "ids", value = "user的id集合", paramType = "body", required = true, dataType = "List")
   @DeleteMapping
-  public String delUserByUserIds(@RequestParam List<String> ids) {
+  public String delUserByUserIds(@RequestBody List<String> ids) {
     service.delUserByUserIds(ids);
 
     return "删除成功";

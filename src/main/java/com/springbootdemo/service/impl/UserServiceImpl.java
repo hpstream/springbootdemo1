@@ -4,6 +4,7 @@
 
 package com.springbootdemo.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.springbootdemo.mapper.UserMapper;
 import com.springbootdemo.model.User;
 import com.springbootdemo.service.UserService;
@@ -11,6 +12,7 @@ import com.springbootdemo.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -23,9 +25,10 @@ import javax.annotation.Resource;
 @Service
 public class UserServiceImpl implements UserService {
 
-  @Resource
-  private UserMapper mapper;
-
+  private final UserMapper mapper;
+  public UserServiceImpl(UserMapper mapper) {
+    this.mapper = mapper;
+  }
 
   /**
    * 获取用户列表.
@@ -33,9 +36,11 @@ public class UserServiceImpl implements UserService {
    * @return 列表
    */
   @Override
-  public List<User> getUsers() {
+  public List<User> getUsers(int offset, int limit, Map<String, Object> condition) {
 
-    return mapper.getUsers();
+    PageHelper.offsetPage(offset, limit);
+
+    return mapper.getUsers(condition);
   }
 
   /**

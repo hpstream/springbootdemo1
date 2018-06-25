@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户 mapper映射.
@@ -23,9 +24,10 @@ public interface UserMapper {
   /**
    * 获取用户列表.
    *
+   * @param map 检索条件
    * @return 列表
    */
-  List<User> getUsers();
+  List<User> getUsers(@Param("map")Map<String, Object> map);
 
   /**
    * 根据id获取用户详情.
