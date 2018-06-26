@@ -1,4 +1,5 @@
 com\springbootdemo\controller\api\UserApi.class
+com\springbootdemo\Swagger2.class
 com\springbootdemo\service\UserService.class
 com\springbootdemo\DemoApplication.class
 com\springbootdemo\service\impl\UserServiceImpl.class
