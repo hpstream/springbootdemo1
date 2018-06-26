@@ -4,16 +4,14 @@
 
 package com.springbootdemo.controller.api;
 
+import com.google.common.collect.Maps;
+
 import com.github.pagehelper.PageInfo;
-import com.springbootdemo.annotation.RequestJsonParam;
-import com.springbootdemo.core.entity.MapWapper;
 import com.springbootdemo.model.User;
 import com.springbootdemo.service.UserService;
 import com.springbootdemo.util.FormUtil;
 import com.springbootdemo.util.JsonUtils;
 
-import org.apache.tomcat.jni.Mmap;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,7 +65,12 @@ public class UserApi {
           @RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
           @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
     Map<String,Object> map = FormUtil.getParameterMap(request);
-    Map<String,Object> condition = JsonUtils.toObject((String)map.get("condition"), Map.class);
+
+    Map<String,Object> condition = Maps.newHashMap();
+    String conditionJson = (String)map.get("condition");
+    if (null != conditionJson) {
+      condition = JsonUtils.toObject(conditionJson, Map.class);
+    }
     return new PageInfo<>(service.getUsers(offset, limit, condition));
   }
 
