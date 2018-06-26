@@ -21,5 +21,21 @@ spring:
       ddl-auto: update
     show-sql: true
 
+###FREEMARKER (FreeMarkerAutoConfiguration)
+  freemarker:
+    allow-request-override: false
+    cache: true
+    check-template-location: true
+    charset: UTF-8
+    content-type: text/html
+    expose-request-attributes: true
+    expose-session-attributes: false
+    expose-spring-macro-helpers: false
+    #prefix:
+    request-context-attribute: rc
+    #settings.*:
+    suffix: .html
+    template-loader-path: classpath:/static/views/
+
 mybatis:
   mapper-locations: classpath*:/mapper/**Mapper.xml
