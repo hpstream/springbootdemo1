@@ -36,9 +36,6 @@ spring:
     #settings.*:
     suffix: .html
     template-loader-path: classpath:/static/views/
-# 修改默认的静态资源存放目录
-#  resources:
-#    static-locations: classpath:/web/
 
 mybatis:
   mapper-locations: classpath*:/mapper/**Mapper.xml
