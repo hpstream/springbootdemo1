@@ -4,6 +4,8 @@ import com.springbootdemo.model.User;
 import com.springbootdemo.service.loginService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class loginServiceImpl  implements loginService {
 

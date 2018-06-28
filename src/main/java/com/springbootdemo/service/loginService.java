@@ -4,7 +4,7 @@ import com.springbootdemo.model.User;
 
 public interface loginService {
 
-    public String  login();
+    String login();
 
-    public void logout(User user);
+    void logout(User user);
 }
