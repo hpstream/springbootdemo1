@@ -15,7 +15,7 @@
 
     <!-- 获取用户列表 -->
     <select id="getUsers" resultMap="UserResultMap">
-        select
+        SELECT
         id
         ,user_name
         ,login_name
@@ -25,25 +25,25 @@
         ,create_user
         ,update_time
         ,update_user
-        from sys_user
-        where 1=1
+        FROM sys_user
+        WHERE 1=1
         <if test="map != null">
             <if test="map.id != null and map.id != ''">
-                and id = #{map.id}
+                AND id = #{map.id}
             </if>
             <if test="map.userName != null and map.userName != ''">
-                and user_name like concat('%' , #{map.userName}, '%')
+                AND user_name LIKE concat('%' , #{map.userName}, '%')
             </if>
             <if test="map.loginName != null and map.loginName != ''">
-                and login_name like concat('%' , #{map.loginName}, '%')
+                AND login_name LIKE concat('%' , #{map.loginName}, '%')
             </if>
         </if>
-        order by create_time desc
+        ORDER BY create_time DESC
     </select>
 
     <!-- 根据id获取用户详情 -->
     <select id="getUserByUserId" resultMap="UserResultMap">
-        select
+        SELECT
         id
         ,user_name
         ,login_name
@@ -53,8 +53,8 @@
         ,create_user
         ,update_time
         ,update_user
-        from sys_user
-        where id = #{id}
+        FROM sys_user
+        WHERE id = #{id}
     </select>
 
     <!-- 根据id修改用户信息 -->
@@ -126,6 +126,5 @@
             </foreach>
         </if>
     </delete>
-
 
 </mapper>
