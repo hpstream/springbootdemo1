@@ -43,10 +43,6 @@ public class UserServiceImpl implements UserService {
     return mapper.getUsers(condition);
   }
 
-  void login(User user) {
-
-  }
-
   /**
    * 根据id获取用户详情.
    *
