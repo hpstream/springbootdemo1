@@ -39,8 +39,6 @@ class ArticleApi {
 
     @PostMapping
     public String addArticle(@RequestBody Article article){
-        String id = "2";
-        article.setId(id);
         service.addArticle(article);
         return "添加成功";
     }
