@@ -2,9 +2,11 @@ package com.springbootdemo;
 
 import com.github.pagehelper.PageHelper;
 
+import com.springbootdemo.filters.StateFilter;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import javax.servlet.Filter;
 import java.util.Properties;
 
 /**
@@ -59,6 +62,30 @@ public class DemoApplication {
 		properties.setProperty("dialect", "mysql");
 		pageHelper.setProperties(properties);
 		return pageHelper;
+	}
+
+
+	/**
+	 * 配置过滤器
+	 * @return
+	 */
+	@Bean
+	public FilterRegistrationBean someFilterRegistration() {
+		FilterRegistrationBean registration = new FilterRegistrationBean();
+		registration.setFilter(stateFilter());
+		registration.addUrlPatterns("/*");
+		registration.addInitParameter("paramName", "paramValue");
+		registration.setName("stateFilter");
+		return registration;
+	}
+
+	/**
+	 * 创建一个bean
+	 * @return
+	 */
+	@Bean(name = "stateFilter")
+	public Filter stateFilter() {
+		return new StateFilter();
 	}
 
 	/**

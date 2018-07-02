@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springbootdemo.mapper.ArticleMapper">
+    <resultMap id="ArticleResultMap" type="com.springbootdemo.model.Article">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="subtitle" jdbcType="VARCHAR" property="subtitle"/>
+        <result column="des" jdbcType="VARCHAR" property="des"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="isTop" jdbcType="VARCHAR" property="isTop"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- 获取用户列表 -->
+    <select id="getArticle" resultMap="ArticleResultMap">
+        select
+        id
+        ,title
+        ,subtitle
+        ,des
+        ,content
+        ,isTop
+        ,create_time
+        ,update_time
+        from tb_article
+        where 1=1
+        order by create_time desc
+    </select>
+
+
+</mapper>
