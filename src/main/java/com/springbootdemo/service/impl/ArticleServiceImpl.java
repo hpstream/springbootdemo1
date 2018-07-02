@@ -6,6 +6,7 @@ import com.springbootdemo.model.Article;
 import com.springbootdemo.service.ArticleService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,12 +30,14 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void editArticle(Article article) {
-        mapper.editArticle(article);
+    public void editArticleById(Article article) {
+        mapper.editArticleById(article);
     }
 
     @Override
     public void deleteArticle(List<String> ids) {
-       mapper.deleteArticle(ids);
+        Map<String,Object> map= new HashMap<>();
+        map.put("ids",ids);
+        mapper.deleteArticle(map);
     }
 }

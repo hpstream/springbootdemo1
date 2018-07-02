@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface ArticleMapper {
@@ -13,7 +14,7 @@ public interface ArticleMapper {
 
     void addArticle(Article article);
 
-    void editArticle(Article article);
+    void editArticleById(Article article);
 
-    void deleteArticle(List<String> ids);
+    void deleteArticle(Map map);
 }

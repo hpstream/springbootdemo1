@@ -45,8 +45,8 @@ class ArticleApi {
 
     @PutMapping
     public  String editArticle(@RequestBody Article article){
-        service.editArticle(article);
-        return  "删除成功";
+        service.editArticleById(article);
+        return  "更新成功";
     }
 
     @DeleteMapping

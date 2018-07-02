@@ -19,7 +19,7 @@ public interface ArticleService {
 
     void addArticle(Article article);
 
-    void editArticle(Article article);
+    void editArticleById(Article article);
 
     void deleteArticle(List<String> ids);
 

@@ -25,7 +25,7 @@
         ,update_time
         from tb_article
         where 1=1
-        order by create_time desc
+        order by id desc
     </select>
 
     <!-- 根据id修改用户信息 -->
@@ -42,14 +42,12 @@
                 des=#{des},
             </if>
             <if test="content != null and content !=''">
-                content=#{content},
+              content=#{content},
             </if>
-            <if test="createTime != null">
-                create_time=#{createTime},
+            <if test="isTop != null and isTop !=''">
+                isTop=#{isTop},
             </if>
-            <if test="updateTime != null">
-                update_time=#{updateTime},
-            </if>
+            update_time=Now()
         </trim>
         WHERE id = #{id}
     </update>
@@ -64,8 +62,8 @@
             <if test="des != null and des !=''">des,</if>
             <if test="content != null and content !=''">content,</if>
             <if test="isTop != null">isTop,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateTime != null">update_time,</if>
+            create_time,
+            update_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             #{id},
@@ -74,15 +72,15 @@
             <if test="des != null and des !=''">#{des},</if>
             <if test="content != null and content !=''">#{content},</if>
             <if test="isTop != null and isTop !=''">#{isTop},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="createTime != null">#{updateTime},</if>
+            Now(),
+            Now()
         </trim>
     </insert>
 
     <!-- 删除用户 -->
-    <delete id="delArticle">
+    <delete id="deleteArticle" parameterType="java.util.Map">
         <if test="null != ids and ids.size > 0">
-            DELETE FROM sys_user
+            DELETE FROM tb_article
             WHERE id IN
             <foreach collection="ids" item="id" open="(" separator=","  close=")">
                 #{id}
