@@ -11,4 +11,9 @@ public interface ArticleMapper {
 
     List<Article> getArticle();
 
+    void addArticle(Article article);
+
+    void editArticle(Article article);
+
+    void deleteArticle(List<String> ids);
 }

@@ -17,7 +17,7 @@ public class Article {
 
     private String content;
 
-    private  Boolean isTop;
+    private  String isTop;
 
     private  String createTime;
 

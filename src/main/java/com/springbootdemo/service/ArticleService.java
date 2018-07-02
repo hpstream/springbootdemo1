@@ -17,4 +17,10 @@ public interface ArticleService {
      */
     List<Article> getArticle(int offset, int limit, Map<String, Object> condition);
 
+    void addArticle(Article article);
+
+    void editArticle(Article article);
+
+    void deleteArticle(List<String> ids);
+
 }

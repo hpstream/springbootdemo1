@@ -7,12 +7,10 @@ import com.springbootdemo.service.ArticleService;
 import com.springbootdemo.util.FormUtil;
 import com.springbootdemo.util.JsonUtils;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Api(description = "文章api")
@@ -38,4 +36,25 @@ class ArticleApi {
         }
         return new PageInfo<>(service.getArticle(offset, limit, condition));
     }
+
+    @PostMapping
+    public String addArticle(@RequestBody Article article){
+        String id = "2";
+        article.setId(id);
+        service.addArticle(article);
+        return "添加成功";
+    }
+
+    @PutMapping
+    public  String editArticle(@RequestBody Article article){
+        service.editArticle(article);
+        return  "删除成功";
+    }
+
+    @DeleteMapping
+    public  String deleteArticle(@RequestBody List<String> ids){
+        service.deleteArticle(ids);
+        return  "删除成功";
+    }
+
 }

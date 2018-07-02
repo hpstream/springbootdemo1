@@ -22,4 +22,19 @@ public class ArticleServiceImpl implements ArticleService {
         return mapper.getArticle();
 
     }
+
+    @Override
+    public void addArticle(Article article) {
+        mapper.addArticle(article);
+    }
+
+    @Override
+    public void editArticle(Article article) {
+        mapper.editArticle(article);
+    }
+
+    @Override
+    public void deleteArticle(List<String> ids) {
+       mapper.deleteArticle(ids);
+    }
 }

@@ -28,5 +28,66 @@
         order by create_time desc
     </select>
 
+    <!-- 根据id修改用户信息 -->
+    <update id="editArticleById" parameterType="com.springbootdemo.model.Article">
+        UPDATE tb_article
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null and title != ''">
+                title=#{title},
+            </if>
+            <if test="subtitle != null and subtitle != ''">
+                subtitle=#{subtitle},
+            </if>
+            <if test="des != null and des !=''">
+                des=#{des},
+            </if>
+            <if test="content != null and content !=''">
+                content=#{content},
+            </if>
+            <if test="createTime != null">
+                create_time=#{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time=#{updateTime},
+            </if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 添加用户 -->
+    <insert id="addArticle" parameterType="com.springbootdemo.model.Article">
+        INSERT INTO tb_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="title != null and title != ''">title,</if>
+            <if test="subtitle != null and subtitle != ''">subtitle,</if>
+            <if test="des != null and des !=''">des,</if>
+            <if test="content != null and content !=''">content,</if>
+            <if test="isTop != null">isTop,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{id},
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="subtitle != null and subtitle != ''">#{subtitle},</if>
+            <if test="des != null and des !=''">#{des},</if>
+            <if test="content != null and content !=''">#{content},</if>
+            <if test="isTop != null and isTop !=''">#{isTop},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <!-- 删除用户 -->
+    <delete id="delArticle">
+        <if test="null != ids and ids.size > 0">
+            DELETE FROM sys_user
+            WHERE id IN
+            <foreach collection="ids" item="id" open="(" separator=","  close=")">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
 
 </mapper>
