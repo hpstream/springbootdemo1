@@ -30,29 +30,29 @@ public class StateFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-        logger.info("aaaaaaaaaa");
-        String url = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
-        if (url.startsWith("/") && url.length() > 1) {
-            url = url.substring(1);
-        }
 
-        if (isInclude(url)){
+        String url = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+
+        // 当为js,css,html,可以直接访问，接口会被拦截，需要session
+        if (!url.startsWith("/api")) {
+
             chain.doFilter(httpRequest, httpResponse);
-            return;
-        } else {
-            HttpSession session = httpRequest.getSession();
-            if (session.getAttribute("") != null){
-                // session存在
-                chain.doFilter(httpRequest, httpResponse);
-                return;
-            } else {
-                // session不存在 准备跳转失败
-                /* RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-                    dispatcher.forward(request, response);*/
-                chain.doFilter(httpRequest, httpResponse);
-                return;
+        } else{
+            HttpSession session = httpRequest.getSession(false);
+
+            if(session != null){
+                String sessionId = session.getId();
+                logger.warn(sessionId);
+            } else{
+                httpResponse.sendRedirect("/");
+                logger.warn("重定向到主页");
             }
+
+//            HttpSession session = httpRequest.getSession();
+
         }
+        chain.doFilter(httpRequest, httpResponse);
+
 
 
     }
